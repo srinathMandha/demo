@@ -52,8 +52,10 @@ jobs:
     - name: Create tar archive
       run: |
         version=${{ steps.extract_version.outputs.version }}
-        tar -czvf Appname-${version}.tar.gz target/*.war pom.xml
+        tar -czvf Appname-${version}.tar target/*.war pom.xml
     - name: Upload File to S3
       run: |
-          aws s3 cp Appname-${version}.tar.gz s3://testwar-viky/Artifacts/
+          ls -ltr
+          find . -name Appname*
+          aws s3 cp Appname-${version}.tar s3://testwar-viky/Artifacts/
     
