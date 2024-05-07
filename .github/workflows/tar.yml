@@ -55,7 +55,6 @@ jobs:
         tar -czvf Appname-${version}.tar target/*.war pom.xml
     - name: Upload File to S3
       run: |
-          ls -ltr
-          find . -name Appname*
+          version=${{ steps.extract_version.outputs.version }}
           aws s3 cp Appname-${version}.tar s3://testwar-viky/Artifacts/
     
