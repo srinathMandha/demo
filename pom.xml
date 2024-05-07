@@ -16,7 +16,16 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>17</java.version>
-	</properties>
+	        <repo.owner>${env.REPO_OWNER}</repo.owner>
+        	<repo.name>${env.REPO_NAME}</repo.name>
+    </properties>
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages Apache Maven</name>
+            <url>https://maven.pkg.github.com/${repo.owner}/${repo.name}</url>
+        </repository>
+    </distributionManagement>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
