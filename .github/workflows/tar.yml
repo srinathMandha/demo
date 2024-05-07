@@ -52,7 +52,7 @@ jobs:
     - name: Create tar archive
       run: |
         version=${{ steps.extract_version.outputs.version }}
-        tar -czvf Appname-${version}.tar target/*.war pom.xml
+        tar -czvf Appname-${version}.tar target/*.war appspec.yml scripts/
     - name: Upload File to S3
       run: |
           version=${{ steps.extract_version.outputs.version }}
