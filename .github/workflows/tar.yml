@@ -35,6 +35,12 @@ jobs:
       run: |
         echo "REPO_OWNER=$(echo "${{ github.repository }}" | cut -d'/' -f1)" >> $GITHUB_ENV
         echo "REPO_NAME=$(echo "${{ github.repository }}" | cut -d'/' -f2)" >> $GITHUB_ENV
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: arn:aws:iam::339712877925:role/CodeDeployRole
+        role-session-name: Github-deployment
+        region: us-east-1
     - name: Build with Maven
       run: mvn -B package --file pom.xml
     - name: Extract project version
@@ -46,9 +52,7 @@ jobs:
       run: |
         version=${{ steps.extract_version.outputs.version }}
         tar -czvf Appname-${version}.tar.gz target/*.war pom.xml
-
-    - name: Upload to GitHub Packages
-      uses: actions/upload-artifact@v2
-      with:
-        name: Appname-artifact.tar.gz
-        path: Appname-${{ steps.extract_version.outputs.version }}.tar.gz
+    - name: Upload File to S3
+      run: |
+          aws s3 cp Appname-${version}.tar.gz s3://testwar-viky/Artifacts/
+    
