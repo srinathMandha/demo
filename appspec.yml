@@ -1,0 +1,10 @@
+ersion: 0.0
+os: linux
+files:
+  - source: /
+    destination: /var/www/html/WordPress
+hooks:
+  BeforeInstall:
+    - location: scripts/test.sh
+      timeout: 300
+      runas: root
