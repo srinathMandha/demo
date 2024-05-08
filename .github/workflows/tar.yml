@@ -31,7 +31,7 @@ jobs:
       - name: Extract project version
         id: extract_version
         run: |
-          echo "::set-env name=VERSION::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
+           echo "::set-output name=version::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
 
       - name: Create tar archive
         run: |
