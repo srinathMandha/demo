@@ -1,0 +1,15 @@
+name: PR Approved Workflow
+
+on:
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check if approved
+        if: github.event.review.state == 'approved'
+        run: |
+          echo "PR is approved. Run your workflow steps here."
