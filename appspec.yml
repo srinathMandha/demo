@@ -3,7 +3,8 @@ os: linux
 
 files:
   - source: /
-    destination: /codedeploy
+    destination: /var/www/html/myapp
+    overwrite: true
 
 hooks:
   BeforeInstall:
