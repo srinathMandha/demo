@@ -1,10 +1,13 @@
-ersion: 0.0
+version: 0.0
 os: linux
 files:
+  # Specify your application files and their destination
   - source: /
-    destination: /var/www/html/WordPress
+    destination: /codedeploy
+
 hooks:
-  BeforeInstall:
-    - location: scripts/test.sh
+  # Post deployment hook to execute after deployment
+  ApplicationStop:
+    - location: scripts/stop_application.sh
       timeout: 300
       runas: root
