@@ -27,7 +27,7 @@ exec &> >(tee -a "$log_file")
 
 # Display log file used for logging
 echo "Using log file: $log_file"
-
+echo "================================custom start ========================="
 # Start Tomcat using the startup script
 echo "Starting Tomcat..."
 "$STARTUP_SCRIPT" start
