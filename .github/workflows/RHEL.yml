@@ -1,9 +1,12 @@
-
-name: Maven Package RHEL
+name: Maven Package
 
 on:
   workflow_dispatch:
-
+    inputs:
+      Deployment_Required:
+        description: 'Trigger step execution'
+        required: true
+        default: 'false'
   release:
     types: [created]
 
@@ -22,6 +25,33 @@ jobs:
           role-to-assume: arn:aws:iam::339712877925:role/CodeDeployRole
           role-session-name: Github-deployment
           aws-region: us-east-1
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+          settings-path: ${{ github.workspace }} # location for the settings.xml file
+
+      - name: Java Version
+        run: java --version
+
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
+
+      - name: Extract project version
+        id: extract_version
+        run: |
+           echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> "$GITHUB_ENV"
+
+      - name: Upload File to S3
+        run: |
+          aws s3 cp target/*.war s3://testwar-viky/Artifacts/
+      - name: Move to Deployment
+        if: ${{ github.event.inputs.Deployment_Required == 'true' }}
+        run: |
+           aws s3 rm s3://testwar-viky/Artifacts/Current_deployable_Artifact/
+           aws s3 cp target/*.war s3://testwar-viky/Artifacts/Current_deployable_Artifact/
 
       - name: Deploy to AWS CodeDeploy
         run: |
