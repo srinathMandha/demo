@@ -1,12 +1,12 @@
 version: 0.0
 os: linux
-
+files:
+  - source: /
+    destination: /codedeploy
 hooks:
   ApplicationStop:
     - location: scripts/before_install.sh
       runas: root
       timeout: 300  # Optional timeout in seconds
 
-files:
-  - source: /
-    destination: /codedeploy
+
