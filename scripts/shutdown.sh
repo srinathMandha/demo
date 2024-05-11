@@ -31,7 +31,7 @@ function is_tomcat_running() {
 # Redirect stdout to both screen and log file
 exec > >(tee -a "$new_log_file")  # Redirect stdout to append to log file
 exec 2>&1  # Redirect stderr to stdout
-
+echo  "====================================== start of shutdown ==========================="
 echo "Initiating Tomcat shutdown loop..."
 
 # Check if Tomcat is running initially
