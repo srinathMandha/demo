@@ -4,7 +4,7 @@ files:
   - source: /
     destination: /codedeploy
 hooks:
-  ApplicationStop:
+  BeforeInstall:
     - location: scripts/before_install.sh
       runas: root
       timeout: 300  # Optional timeout in seconds
