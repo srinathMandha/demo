@@ -18,7 +18,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ github.action.secerets.IAMROLE_AWS }}
+          role-to-assume: arn:aws:iam::339712877925:role/CodeDeployRole
           role-session-name: Github-deployment
           aws-region: us-east-1
       - name: Set up JDK 17
