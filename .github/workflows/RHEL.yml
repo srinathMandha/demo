@@ -1,4 +1,4 @@
-name: Maven Package
+name: RHEL
 
 on:
   workflow_dispatch:
