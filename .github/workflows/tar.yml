@@ -50,4 +50,4 @@ jobs:
 
       - name: Deploy to AWS CodeDeploy
         run: |
-          aws deploy create-deployment --application-name TomcatDeployToEc2 --deployment-group-name TomcatRHEL--github-location repository=${{ github.repository }},commitId=${{ github.sha }}
+          aws deploy create-deployment --application-name TomcatDeployToEc2 --deployment-group-name TomcatRHEL --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
