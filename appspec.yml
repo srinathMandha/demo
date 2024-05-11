@@ -1,15 +1,12 @@
 version: 0.0
 os: linux
 
+hooks:
+  ApplicationStop:
+    - location: scripts/before_install.sh
+      runas: root
+      timeout: 300  # Optional timeout in seconds
+
 files:
   - source: /
-    destination: /var/www/html/myapp
-    overwrite: true
-
-hooks:
-  BeforeInstall:
-    - location: scripts/test.sh
-      runas: root
-  AfterInstall:
-    - location: scripts/test.sh
-      runas: root
+    destination: /codedeploy
