@@ -33,6 +33,7 @@ exec &> >(tee -a "$log_file")
 echo "Using log file: $log_file"
 
 # Download artifact from S3 using AWS CLI with logging
+echo "=============================================== startof update_app.sh======================"
 echo "Downloading artifact from S3..."
 aws s3 cp "s3://$ARTIFACT_S3_BUCKET/$ARTIFACT_S3_KEY" "$WEBAPPS_DIR/" --recursive --exclude "*" --include "$FILE_PATTERN"
 
