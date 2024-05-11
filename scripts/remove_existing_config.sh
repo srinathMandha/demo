@@ -9,7 +9,7 @@ LOG_DIR="/codedeploy/logs"             # Path to log directory
 mkdir -p "$LOG_DIR"
 
 # Find the most recently modified log file in the log directory
-latest_log=$(ls -t "$LOG_DIR"/log*.txt 2>/dev/null | head -n 1)
+latest_log=$(ls -t "$LOG_DIR"/deployment_log_*.log 2>/dev/null | head -n 1)
 
 # Check if a log file was found
 if [ -n "$latest_log" ]; then
