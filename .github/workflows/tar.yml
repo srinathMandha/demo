@@ -2,7 +2,11 @@ name: Maven Package
 
 on:
   workflow_dispatch:
-
+    inputs:
+      Deployment_Required:
+        description: 'Trigger step execution'
+        required: true
+        default: 'false'
   release:
     types: [created]
 
@@ -41,12 +45,16 @@ jobs:
            echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> "$GITHUB_ENV"
       - name: Create tar archive
         run: |
-          
-          tar -czvf Appname-${{ env.VERSION }}.tar target/*.war appspec.yml scripts/
 
       - name: Upload File to S3
         run: |
-          aws s3 cp Appname-${{ env.VERSION }}.tar s3://testwar-viky/Artifacts/
+          aws s3 cp target/*.war s3://testwar-viky/Artifacts/
+
+      - name: Move to Deployment
+        if: ${{ github.event.inputs.Deployment_Required == 'true' }}
+        run: |
+           aws s3 rm s3://testwar-viky/Artifacts/Current_deployable_Artifact/
+           aws s3 cp target/*.war s3://testwar-viky/Artifacts/Current_deployable_Artifact/
 
       - name: Deploy to AWS CodeDeploy
         run: |
