@@ -7,7 +7,7 @@ if [ $# -ne 1 ]; then
     exit 1
 fi
 
-DEPLOYMENT_ID="$1"
+DEPLOYMENT_ID="123"
 LOG_FILE="/var/log/deploy_script_${DEPLOYMENT_ID}.log"
 
 # Redirect stdout and stderr to the logfile
