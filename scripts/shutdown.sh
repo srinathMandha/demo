@@ -18,7 +18,7 @@ fi
 next_number=$((latest_number + 1))
 
 # Create new log file with incremented number
-new_log_file="$LOG_DIR/deployment_log_${next_number}.txt"
+new_log_file="$LOG_DIR/deployment_log_${next_number}.log"
 touch "$new_log_file"
 
 echo "New log file created: $new_log_file"
