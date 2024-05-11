@@ -22,6 +22,7 @@ if [ -n "$latest_log" ]; then
 
         # Check if the application directory exists
         if [ -d "$APP_DIR" ]; then
+            echo "=================================== start of remove existing file====================="
             echo "Application directory found: $APP_DIR"
 
             # Generate a timestamp for backup folder name (e.g., YYYYMMDD_HHMMSS)
