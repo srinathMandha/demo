@@ -50,7 +50,7 @@ jobs:
       - name: Move to Deployment
         if: ${{ github.event.inputs.Deployment_Required == 'true' }}
         run: |
-           aws s3 rm s3://testwar-viky/Artifacts/Current_deployable_Artifact/
+           aws s3 rm s3://testwar-viky/Artifacts/Current_deployable_Artifact/ --recursive
            aws s3 cp target/*.war s3://testwar-viky/Artifacts/Current_deployable_Artifact/
 
       - name: Deploy to AWS CodeDeploy
