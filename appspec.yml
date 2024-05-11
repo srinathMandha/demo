@@ -1,13 +1,14 @@
 version: 0.0
 os: linux
+
 files:
-  # Specify your application files and their destination
   - source: /
     destination: /codedeploy
 
 hooks:
-  # Post deployment hook to execute after deployment
-  ApplicationStop:
-    - location: scripts/stop_application.sh
-      timeout: 300
+  BeforeInstall:
+    - location: scripts/test.sh
+      runas: root
+  AfterInstall:
+    - location: scripts/test.sh
       runas: root
