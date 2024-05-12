@@ -29,14 +29,14 @@ if [ -n "$latest_log" ]; then
             timestamp=$(date +"%Y%m%d_%H%M%S")
 
             # Create a backup folder using the timestamp
-            backup_folder="$BACKUP_DIR/sample_$timestamp"
+            backup_folder="$BACKUP_DIR/vicky_$timestamp"
             mkdir -p "$backup_folder"
 
             echo "Created backup folder: $backup_folder"
 
             # Move contents of the application directory to the backup folder
             echo "Moving application files to backup folder..."
-            mv "$APP_DIR/sample" "$backup_folder"
+            mv "$APP_DIR/vicky*" "$backup_folder"
 
             # Check if move operation was successful
             if [ $? -eq 0 ]; then
