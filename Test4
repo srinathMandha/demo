@@ -1,0 +1,45 @@
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import java.util.List;
+
+public class SwitchToIframe {
+    public static void main(String[] args) {
+        // Initialize the WebDriver
+        WebDriver driver = new ChromeDriver();
+
+        // Open the webpage
+        driver.get("https://www.sec.gov/ix?doc=/Archives/edgar/data/821189/000082118924000021/eog-20240331.htm");
+
+        try {
+            // Switch to the iframe by name or ID
+            driver.switchTo().frame("ixvFrame");
+
+            // Now interact with elements inside the iframe
+            List<WebElement> allElements = driver.findElements(By.xpath("//*"));
+
+            // Print the number of elements found inside the iframe
+            System.out.println("Total Elements inside the iframe: " + allElements.size());
+
+            // Iterate through each element and print its tag name and attributes
+            for (WebElement element : allElements) {
+                System.out.println("Tag Name: " + element.getTagName());
+                System.out.println("Text: " + element.getText());
+                System.out.println("Attributes: " + element.getAttribute("class") + " | " + element.getAttribute("id"));
+                System.out.println("------------------------------------------");
+            }
+
+            // Optionally, switch back to the main content if needed
+            driver.switchTo().defaultContent();
+            
+        } catch (Exception e) {
+            System.out.println("Error occurred while switching to iframe or retrieving elements.");
+            e.printStackTrace();
+        } finally {
+            // Close the WebDriver
+            driver.quit();
+        }
+    }
+}
