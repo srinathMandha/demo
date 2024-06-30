@@ -1,0 +1,35 @@
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class RetrieveValue {
+    public static void main(String[] args) {
+        // Set the path to your ChromeDriver
+        System.setProperty("webdriver.chrome.driver", "/path/to/chromedriver");
+
+        // Initialize the WebDriver
+        WebDriver driver = new ChromeDriver();
+
+        // Open the webpage (replace 'your_url' with the actual URL of your webpage)
+        driver.get("your_url");
+
+        try {
+            // Find the table row where Column 1 says "Total Assets"
+            WebElement row = driver.findElement(By.xpath("//tr[td[contains(text(),'Total Assets')]]"));
+
+            // Find the cell that contains the value 43857 (5th cell in this case)
+            WebElement valueCell = row.findElement(By.xpath(".//td[5]/span/span/ix:nonfraction"));
+            String totalAssetsValue = valueCell.getText();
+
+            // Print the value
+            System.out.println("Total Assets value: " + totalAssetsValue);
+        } catch (Exception e) {
+            System.out.println("Row with 'Total Assets' not found or error retrieving value.");
+            e.printStackTrace();
+        } finally {
+            // Close the WebDriver
+            driver.quit();
+        }
+    }
+}
