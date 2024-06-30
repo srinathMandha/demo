@@ -14,22 +14,22 @@ public class RetrieveValue {
         // Open the webpage (replace 'your_url' with the actual URL of your webpage)
         driver.get("your_url");
 
-        try {
-            // Find the table row where Column 1 says "Total Assets"
-            WebElement row = driver.findElement(By.xpath("//tr[td[contains(text(),'Total Assets')]]"));
+                try {
+            // Find the first table row where the first cell contains "Total Assets"
+            WebElement row = driver.findElement(By.xpath("//tr[td[1][span[contains(text(),'Total Assets')]]]"));
 
-            // Find the cell that contains the value 43857 (5th cell in this case)
-            WebElement valueCell = row.findElement(By.xpath(".//td[5]/span/span/ix:nonfraction"));
-            String totalAssetsValue = valueCell.getText();
+            // Find the third column cell in this row
+            WebElement valueCell = row.findElement(By.xpath(".//td[3]"));
+            String columnValue = valueCell.getText();
 
             // Print the value
-            System.out.println("Total Assets value: " + totalAssetsValue);
+            System.out.println("Value in the third column: " + columnValue);
         } catch (Exception e) {
             System.out.println("Row with 'Total Assets' not found or error retrieving value.");
             e.printStackTrace();
         } finally {
             // Close the WebDriver
             driver.quit();
-        }
+        }
     }
 }
