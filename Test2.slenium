@@ -3,33 +3,66 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-public class RetrieveValue {
-    public static void main(String[] args) {
-        // Set the path to your ChromeDriver
-        System.setProperty("webdriver.chrome.driver", "/path/to/chromedriver");
+import java.util.List;
 
+public class SwitchToIframeColumnFunction {
+
+    public static void main(String[] args) {
         // Initialize the WebDriver
         WebDriver driver = new ChromeDriver();
 
-        // Open the webpage (replace 'your_url' with the actual URL of your webpage)
-        driver.get("your_url");
+        // Open the webpage
+        driver.get("https://www.sec.gov/ix?doc=/Archives/edgar/data/821189/000082118924000021/eog-20240331.htm");
 
-                try {
-            // Find the first table row where the first cell contains "Total Assets"
-            WebElement row = driver.findElement(By.xpath("//tr[td[1][span[contains(text(),'Total Assets')]]]"));
+        try {
+            // Switch to the iframe by name or ID
+            driver.switchTo().frame("ixvFrame");
 
-            // Find the third column cell in this row
-            WebElement valueCell = row.findElement(By.xpath(".//td[3]"));
-            String columnValue = valueCell.getText();
+            // Call the function to retrieve the value from the third column for "Total Assets"
+            String thirdColumnValue = getColumnValue(driver, "Total Assets", 3);
 
-            // Print the value
-            System.out.println("Value in the third column: " + columnValue);
+            // Print the retrieved value
+            System.out.println("Third Column Value: " + thirdColumnValue);
+
         } catch (Exception e) {
-            System.out.println("Row with 'Total Assets' not found or error retrieving value.");
+            System.out.println("Error occurred while switching to iframe or retrieving elements.");
             e.printStackTrace();
         } finally {
             // Close the WebDriver
             driver.quit();
         }
-    }
+    }
+
+    // Function to retrieve the value of a specified column for a row identified by searchText in the first column
+    public static String getColumnValue(WebDriver driver, String searchText, int columnIndex) {
+        String columnValue = "";
+
+        try {
+            // Find all matching elements with the XPath
+            List<WebElement> allElements = driver.findElements(By.xpath("//tr//td[1][span[contains(text(),'" + searchText + "')]]"));
+
+            // Check if any matching elements were found
+            if (!allElements.isEmpty()) {
+                // Get the first matching element
+                WebElement firstElement = allElements.get(0);
+
+                // Adjust the columnIndex by subtracting 1 for 0-based indexing within the function
+                int adjustedColumnIndex = columnIndex - 1;
+
+                // Now find the value of the specified adjusted column for this element
+                WebElement columnElement = firstElement.findElement(By.xpath("./following-sibling::td[" + adjustedColumnIndex + "]"));
+
+                // Get the text of the column
+                columnValue = columnElement.getText().trim();
+            } else {
+                System.out.println("No matching elements found for: " + searchText);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error occurred while retrieving column value for: " + searchText);
+            e.printStackTrace();
+        }
+
+        return columnValue;
+    }
 }
