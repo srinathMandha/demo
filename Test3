@@ -1,9 +1,11 @@
-import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-public class JavaScriptExecutorExample {
+import java.util.List;
+
+public class GetAllElements {
     public static void main(String[] args) {
         // Initialize the WebDriver
         WebDriver driver = new ChromeDriver();
@@ -12,18 +14,21 @@ public class JavaScriptExecutorExample {
         driver.get("https://www.sec.gov/ix?doc=/Archives/edgar/data/821189/000082118924000021/eog-20240331.htm");
 
         try {
-            // Execute JavaScript to interact with elements
-            JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
-            WebElement bodyElement = (WebElement) jsExecutor.executeScript("return document.body");
+            // Get all elements on the page
+            List<WebElement> allElements = driver.findElements(By.xpath("//*"));
 
-            // Print attributes of the <body> element
-            System.out.println("Tag Name: " + bodyElement.getTagName());
-            System.out.println("Text: " + bodyElement.getText());
-            System.out.println("Attributes: " + bodyElement.getAttribute("class") + " | " + bodyElement.getAttribute("id"));
+            // Print the number of elements found
+            System.out.println("Total Elements on the Page: " + allElements.size());
 
-            // You can continue interacting with elements using JavaScript as needed
+            // Iterate through each element and print its tag name and attributes
+            for (WebElement element : allElements) {
+                System.out.println("Tag Name: " + element.getTagName());
+                System.out.println("Text: " + element.getText());
+                System.out.println("Attributes: " + element.getAttribute("class") + " | " + element.getAttribute("id"));
+                System.out.println("------------------------------------------");
+            }
         } catch (Exception e) {
-            System.out.println("Error occurred while executing JavaScript or retrieving elements from the page.");
+            System.out.println("Error occurred while retrieving elements from the page.");
             e.printStackTrace();
         } finally {
             // Close the WebDriver
