@@ -19,7 +19,7 @@ public class SwitchToIframeColumnFunction {
         try {
             // Wait until the iframe with id "ixvFrame" is present
             WebDriverWait wait = new WebDriverWait(driver, 10);
-            wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("ixvFrame"));
+            wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(By.id("ixvFrame")));
 
             // Call the function to retrieve the value from the third column for "Total Assets"
             String thirdColumnValue = getColumnValue(driver, "Total Assets", 3);
