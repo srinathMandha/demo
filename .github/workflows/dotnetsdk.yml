@@ -1,0 +1,21 @@
+name: Build .NET Framework 4.5 Project
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install .NET Framework 4.5 Developer Pack
+        run: |
+          choco install dotnet4.5-sdk --params "'/NoRestart'" -y
+          # Verify installation
+          dotnet --list-sdks
