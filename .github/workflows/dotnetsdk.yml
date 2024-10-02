@@ -1,6 +1,7 @@
 name: Build .NET Framework 4.5 Project
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
