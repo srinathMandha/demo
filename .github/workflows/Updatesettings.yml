@@ -16,7 +16,7 @@ jobs:
 
     - name: Replace value using Python
       run: |
-        python3 -c '
+        python3 <<EOF
 import json
 
 # Load appsettings.Sit.json
@@ -34,7 +34,7 @@ app_data["ConnectionStrings"]["Eap.Reporting.ConnectionString"]["connectionStrin
 # Write the updated content back to appsettings.json
 with open("appsettings.json", "w") as app_file:
     json.dump(app_data, app_file, indent=2)
-        '
+EOF
 
     - name: Upload modified appsettings.json
       uses: actions/upload-artifact@v4
