@@ -11,20 +11,14 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Install jq
-      run: sudo apt-get install -y jq
-
-    - name: Extract connection string from SIT file
-      id: extract_connection_string
+    - name: Extract connection string from SIT file using sed
       run: |
-        SIT_VALUE=$(jq -r '.ConnectionStrings["Eap.Reporting.ConnectionString"].connectionString' appsettings.Sit.json)
+        SIT_VALUE=$(sed -n 's/.*"Eap\.Reporting\.ConnectionString":.*"connectionString": "\(.*\)".*/\1/p' appsettings.Sit.json)
         echo "SIT_VALUE=$SIT_VALUE" >> $GITHUB_ENV
 
-    - name: Replace value in appsettings.json
+    - name: Replace Eap.Reporting.ConnectionString in appsettings.json using sed
       run: |
-        jq --arg connString "$SIT_VALUE" \
-        '.ConnectionStrings["Eap.Reporting.ConnectionString"].connectionString = $connString' \
-        appsettings.json > temp.json && mv temp.json appsettings.json
+        sed -i "s|\(\"Eap.Reporting.ConnectionString\"[^{]*\"connectionString\":\) \"[^\"]*\"|\1 \"$SIT_VALUE\"|g" appsettings.json
 
     - name: Upload modified appsettings.json
       uses: actions/upload-artifact@v4
