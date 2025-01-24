@@ -2,42 +2,35 @@ name: Update appsettings.json
 
 on:
   workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Select environment file'
+        required: true
+        default: 'Sit'
+        type: choice
+        options:
+          - Sit
+          - Prod
+          - Dev
 
 jobs:
   update-json:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Install Python
-      run: sudo apt-get install -y python3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'  # Use the desired Python version
 
-    - name: Replace value using Python
-      run: |
-        python3 <<EOF
-import json
+      - name: Run Python script to replace connection string
+        run: python .github/workflows/scripts/replacestring.py appsettings.json appsettings.${{ github.event.inputs.environment }}.json
 
-# Load appsettings.Sit.json
-with open("appsettings.Sit.json", "r") as sit_file:
-    sit_data = json.load(sit_file)
-
-# Load appsettings.json
-with open("appsettings.json", "r") as app_file:
-    app_data = json.load(app_file)
-
-# Replace the value
-app_data["ConnectionStrings"]["Eap.Reporting.ConnectionString"]["connectionString"] = \
-    sit_data["ConnectionStrings"]["Eap.Reporting.ConnectionString"]["connectionString"]
-
-# Write the updated content back to appsettings.json
-with open("appsettings.json", "w") as app_file:
-    json.dump(app_data, app_file, indent=2)
-EOF
-
-    - name: Upload modified appsettings.json
-      uses: actions/upload-artifact@v4
-      with:
-        name: updated-appsettings
-        path: appsettings.json
+      - name: Upload modified appsettings.json
+        uses: actions/upload-artifact@v4
+        with:
+          name: updated-appsettings
+          path: appsettings.json
