@@ -11,14 +11,30 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Extract connection string from SIT file using sed
-      run: |
-        SIT_VALUE=$(sed -n 's/.*"Eap\.Reporting\.ConnectionString":.*"connectionString": "\(.*\)".*/\1/p' appsettings.Sit.json)
-        echo "SIT_VALUE=$SIT_VALUE" >> $GITHUB_ENV
+    - name: Install Python
+      run: sudo apt-get install -y python3
 
-    - name: Replace Eap.Reporting.ConnectionString in appsettings.json using sed
+    - name: Replace value using Python
       run: |
-        sed -i "s|\(\"Eap.Reporting.ConnectionString\"[^{]*\"connectionString\":\) \"[^\"]*\"|\1 \"$SIT_VALUE\"|g" appsettings.json
+        import json
+
+        # Load appsettings.Sit.json
+        with open('appsettings.Sit.json', 'r') as sit_file:
+            sit_data = json.load(sit_file)
+        
+        # Load appsettings.json
+        with open('appsettings.json', 'r') as app_file:
+            app_data = json.load(app_file)
+
+        # Replace the value
+        app_data['ConnectionStrings']['Eap.Reporting.ConnectionString']['connectionString'] = \
+            sit_data['ConnectionStrings']['Eap.Reporting.ConnectionString']['connectionString']
+
+        # Write the updated content back to appsettings.json
+        with open('appsettings.json', 'w') as app_file:
+            json.dump(app_data, app_file, indent=2)
+
+      shell: python3
 
     - name: Upload modified appsettings.json
       uses: actions/upload-artifact@v4
