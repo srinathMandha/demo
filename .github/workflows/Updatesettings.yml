@@ -16,25 +16,25 @@ jobs:
 
     - name: Replace value using Python
       run: |
-        import json
+        python3 -c '
+import json
 
-        # Load appsettings.Sit.json
-        with open('appsettings.Sit.json', 'r') as sit_file:
-            sit_data = json.load(sit_file)
-        
-        # Load appsettings.json
-        with open('appsettings.json', 'r') as app_file:
-            app_data = json.load(app_file)
+# Load appsettings.Sit.json
+with open("appsettings.Sit.json", "r") as sit_file:
+    sit_data = json.load(sit_file)
 
-        # Replace the value
-        app_data['ConnectionStrings']['Eap.Reporting.ConnectionString']['connectionString'] = \
-            sit_data['ConnectionStrings']['Eap.Reporting.ConnectionString']['connectionString']
+# Load appsettings.json
+with open("appsettings.json", "r") as app_file:
+    app_data = json.load(app_file)
 
-        # Write the updated content back to appsettings.json
-        with open('appsettings.json', 'w') as app_file:
-            json.dump(app_data, app_file, indent=2)
+# Replace the value
+app_data["ConnectionStrings"]["Eap.Reporting.ConnectionString"]["connectionString"] = \
+    sit_data["ConnectionStrings"]["Eap.Reporting.ConnectionString"]["connectionString"]
 
-      shell: python3
+# Write the updated content back to appsettings.json
+with open("appsettings.json", "w") as app_file:
+    json.dump(app_data, app_file, indent=2)
+        '
 
     - name: Upload modified appsettings.json
       uses: actions/upload-artifact@v4
