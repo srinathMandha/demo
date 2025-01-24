@@ -27,7 +27,7 @@ jobs:
           python-version: '3.x'  # Use the desired Python version
 
       - name: Run Python script to replace connection string
-        run: python .github/workflows/scripts/replacestring.py appsettings.json appsettings.${{ github.event.inputs.environment }}.json
+        run: python .github/workflows/scripts/replacestring.py appsettings.json appsettings.${{ github.event.inputs.environment }}.json ${{ github.event.inputs.environment }}
 
       - name: Upload modified appsettings.json
         uses: actions/upload-artifact@v4
