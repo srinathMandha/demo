@@ -1,0 +1,38 @@
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import java.util.List;
+
+public class TableAutomation {
+    public static void main(String[] args) {
+        // Set up the WebDriver
+        System.setProperty("webdriver.chrome.driver", "path/to/chromedriver");
+        WebDriver driver = new ChromeDriver();
+
+        // Open the webpage
+        driver.get("URL_OF_YOUR_WEBPAGE");
+
+        // Locate the table with ID 12345
+        WebElement table = driver.findElement(By.id("12345"));
+
+        // Find all rows in the table
+        List<WebElement> rows = table.findElements(By.tagName("tr"));
+
+        for (WebElement row : rows) {
+            // Find all columns in the current row
+            List<WebElement> columns = row.findElements(By.tagName("td"));
+
+            // Check if the first column's text is "Total Assets"
+            if (columns.size() > 0 && columns.get(0).getText().equals("Total Assets")) {
+                // Get the value from the second column
+                String totalAssetsValue = columns.get(1).getText();
+                System.out.println("Total Assets Value: " + totalAssetsValue);
+                break;
+            }
+        }
+
+        // Close the browser
+        driver.quit();
+    }
+}
